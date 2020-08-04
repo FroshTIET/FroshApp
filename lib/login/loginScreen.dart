@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/theme/colorTheme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -25,9 +26,9 @@ class LoginScreen extends StatelessWidget {
       onLogin: (_data) => authUser(_data),
       onSignup: (_data) => registerUser(_data),
       onSubmitAnimationCompleted: () {
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //   builder: (context) => Navbar(),
-        // ));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomeWrapper(),
+        ));
         print("Logged in");
       },
       onRecoverPassword: (_) => recoverPassword(_),
