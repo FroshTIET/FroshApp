@@ -136,76 +136,8 @@ class _FaqScreenState extends State<FaqScreen> {
               SizedBox(
                 height: pixelheight * 4,
               ),
-              Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {
-                    print("Chat page");
-                  },
-                  child: Material(
-                    color: Colors.white,
-                    elevation: 1.0,
-                    borderRadius: BorderRadius.circular(30.0),
-                    shadowColor: Colors.black,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.085,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Center(
-                              child: Text(
-                            "Chat with us",
-                            style: TextStyle(fontSize: 25),
-                          )),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 20,
-              ),
-              Container(
-                height: 130,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 12,
-                      ),
-                      materialCat(Icon(Icons.store_mall_directory), "Website",
-                          () async {
-                        _launchURL("https://froshtiet.com");
-                      }),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      materialCat(Icon(Icons.image), "Facebook", () {
-                        print("Hello");
-                        _launchURL("https://in.pg.com/");
-                      }),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      materialCat(Icon(Icons.call), "Contact Us", () {
-                        _launchURL("tel:+91 9872466977");
-                      }),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      materialCat(Icon(Icons.chat), "Feedback", () {
-                        _launchURL(
-                            "mailto:feedback@pg.com?subject=AppFeedback");
-                      }),
-                    ],
-                  ),
-                ),
               ),
               SizedBox(
                 height: pixelheight * 10,
@@ -245,7 +177,7 @@ materialCat(icon, name, ontap) {
                 child: Center(
                     child: Text(
                   name,
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12, color: Colors.black),
                 )),
               ),
             ),

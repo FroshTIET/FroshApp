@@ -32,6 +32,10 @@ dependencies:
   shared_preferences: 0.5.8
   url_launcher: 5.5.0
   http: 0.12.2
+  provider: 4.3.1
+  flutter_screenutil: 2.3.1
+  line_awesome_flutter: 1.0.1
+  animated_theme_switcher: 1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

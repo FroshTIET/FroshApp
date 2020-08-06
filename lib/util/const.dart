@@ -11,6 +11,7 @@ class Constants {
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;
   static Color badgeColor = Colors.red;
+  static bool isDarkTheme = false;
 
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
@@ -28,6 +29,13 @@ class Constants {
         ),
       ),
     ),
+    textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: darkBG,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w800,
+      ),
+    ),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -37,6 +45,7 @@ class Constants {
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
+    indicatorColor: Colors.grey,
     appBarTheme: AppBarTheme(
       elevation: 0,
       textTheme: TextTheme(

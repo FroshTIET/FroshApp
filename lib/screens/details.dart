@@ -13,14 +13,6 @@ class Details extends StatelessWidget {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications_none,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: ListView(
         children: <Widget>[
@@ -124,7 +116,7 @@ class Details extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.airplanemode_active,
+          Icons.share,
         ),
         onPressed: () {},
       ),

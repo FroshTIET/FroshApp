@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/home.dart';
+import 'package:froshApp/screens/profile.dart';
 import 'package:froshApp/widgets/icon_badge.dart';
 
 class TestWidget extends StatelessWidget {
@@ -29,11 +30,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: ScrollPhysics(),
+        physics: PageScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
         // children: List.generate(4, (index) => Home()),
-        children: [Home(), TestWidget(), Home(), FaqScreen()],
+        children: [Home(), TestWidget(), FaqScreen(), ProfilePage()],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -43,8 +44,8 @@ class _MainScreenState extends State<MainScreen> {
             SizedBox(width: 7.0),
             barIcon(icon: Icons.home, page: 0),
             barIcon(icon: Icons.whatshot, page: 1),
-            barIcon(icon: Icons.person, page: 2),
-            barIcon(icon: Icons.device_unknown, page: 3),
+            barIcon(icon: Icons.bubble_chart, page: 2),
+            barIcon(icon: Icons.person, page: 3),
             SizedBox(width: 7.0),
           ],
         ),
@@ -81,7 +82,8 @@ class _MainScreenState extends State<MainScreen> {
       icon: badge ? IconBadge(icon: icon, size: 24.0) : Icon(icon, size: 24.0),
       color:
           _page == page ? Theme.of(context).accentColor : Colors.blueGrey[300],
-      onPressed: () => _pageController.jumpToPage(page),
+      onPressed: () => _pageController.animateToPage(page,
+          duration: Duration(milliseconds: 500), curve: Curves.ease),
     );
   }
 }

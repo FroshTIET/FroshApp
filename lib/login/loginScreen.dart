@@ -77,11 +77,13 @@ class LoginScreen extends StatelessWidget {
 Duration get loginTime => Duration(milliseconds: 2250);
 
 Future<String> authUser(LoginData data) async {
-  if ((data.name == "frosh") && (data.password == "password")) {
-    return null;
-  } else {
-    return "Incorrect username and password";
-  }
+  return Future.delayed(loginTime).then((_) async {
+    if ((data.name == "frosh") && (data.password == "password")) {
+      return null;
+    } else {
+      return "Incorrect username and password";
+    }
+  });
 }
 
 Future<String> registerUser(LoginData data) {

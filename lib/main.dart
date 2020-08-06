@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:froshApp/login/loginScreen.dart';
+import 'package:froshApp/screens/home.dart';
+import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/theme/colorTheme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,14 +12,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "My app",
-      home: LoginScreen(),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        accentColor: Colors.redAccent,
-        primaryColor: ColorClass.darkYellow,
-        brightness: Brightness.light,
+    return ChangeNotifierProvider<ThemeProvider>(
+      create: (context) => ThemeProvider(),
+      child: MaterialApp(
+        title: "My app",
+        home: LoginScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

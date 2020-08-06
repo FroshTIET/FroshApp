@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/util/places.dart';
 import 'package:froshApp/widgets/horizontal_place_item.dart';
 import 'package:froshApp/widgets/icon_badge.dart';
 import 'package:froshApp/widgets/search_bar.dart';
 import 'package:froshApp/widgets/vertical_place_item.dart';
 import 'package:froshApp/util/const.dart';
+import 'package:provider/provider.dart';
 import 'main_screen.dart';
 
 class HomeWrapper extends StatefulWidget {
-  ThemeData currentTheme = Constants.darkTheme;
+  ThemeData currentTheme = Constants.lightTheme;
   @override
   _HomeWrapperState createState() => _HomeWrapperState();
 }
@@ -19,22 +21,10 @@ class _HomeWrapperState extends State<HomeWrapper> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
-      theme: widget.currentTheme,
+      theme: Provider.of<ThemeProvider>(context).theme,
       darkTheme: Constants.darkTheme,
       home: Scaffold(
         body: MainScreen(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.color_lens),
-          onPressed: () {
-            if (widget.currentTheme == Constants.darkTheme) {
-              widget.currentTheme = Constants.lightTheme;
-            } else {
-              widget.currentTheme = Constants.darkTheme;
-            }
-
-            setState(() {});
-          },
-        ),
       ),
     );
   }
@@ -47,14 +37,13 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications_none,
-            ),
-            onPressed: () {},
+            icon: Icon(Icons.settings),
+            onPressed: Provider.of<ThemeProvider>(context).switchTheme,
           ),
         ],
       ),
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(20.0),
