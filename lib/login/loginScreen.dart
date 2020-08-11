@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/theme/colorTheme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:http/io_client.dart';
-import 'dart:io';
 
 Future<String> loginCheck() async {}
 
