@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:froshApp/login/loginScreen.dart';
+import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/home.dart';
+import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/theme/colorTheme.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       create: (context) => ThemeProvider(),
       child: MaterialApp(
         title: "My app",
-        home: LoginScreen(),
+        home: HomeWrapper(),
         debugShowCheckedModeBanner: false,
       ),
     );

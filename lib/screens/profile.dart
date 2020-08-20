@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/widgets/profileContent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:RetailAssistant/utilities/sizeConfig.dart';
@@ -199,7 +200,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(5.0),
                           ),
                           child: GestureDetector(
-                            onTap: () async {},
+                            onTap: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MentorPage()));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(

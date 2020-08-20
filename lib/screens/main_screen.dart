@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/screens/profile.dart';
+import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/widgets/icon_badge.dart';
 import 'package:froshApp/widgets/timeline.dart';
@@ -41,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         // children: List.generate(4, (index) => Home()),
-        children: [Home(), ShowcaseFroshTimeline(), FaqScreen(), ProfilePage()],
+        children: [Home(), ShowcaseFroshTimeline(), TeamPage(), ProfilePage()],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
@@ -54,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(width: 7.0),
               barIcon(icon: Icons.home, page: 0, title: "Home"),
               barIcon(icon: Icons.whatshot, page: 1, title: "TimeLine"),
-              barIcon(icon: Icons.bubble_chart, page: 2, title: "Events"),
+              barIcon(icon: Icons.bubble_chart, page: 2, title: "Team"),
               barIcon(icon: Icons.person, page: 3, title: "Profile"),
               SizedBox(width: 7.0),
             ],

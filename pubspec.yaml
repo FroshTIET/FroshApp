@@ -42,7 +42,11 @@ dependencies:
   google_fonts:
   flutter_showcase:
   timeline_tile:
-    
+  dio:
+  flutter_inappwebview:
+  firebase_messaging: 7.0.0
+  firebase_analytics: 6.0.0
+  snaplist:    
 dev_dependencies:
   flutter_test:
     sdk: flutter

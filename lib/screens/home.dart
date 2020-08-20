@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/util/places.dart';
 import 'package:froshApp/widgets/horizontal_place_item.dart';
@@ -12,6 +13,21 @@ import 'package:froshApp/util/const.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'main_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
+}
 
 class HomeWrapper extends StatefulWidget {
   ThemeData currentTheme = Constants.lightTheme;
@@ -20,6 +36,32 @@ class HomeWrapper extends StatefulWidget {
 }
 
 class _HomeWrapperState extends State<HomeWrapper> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String _title = '';
+  String _message = '';
+  void setUpMessaging() {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print('on message $message');
+          setState(() {
+            _title = message['notification']['title'];
+            _message = message['notification']['body'];
+          });
+        },
+        onResume: (Map<String, dynamic> message) async {},
+        onLaunch: (Map<String, dynamic> message) async {});
+
+    FlutterError.onError = null;
+    _firebaseMessaging.getToken().then((token) => print("tokenkey: " + token));
+    _firebaseMessaging.subscribeToTopic("allusers");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setUpMessaging();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -140,44 +182,41 @@ class Home extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: GestureDetector(
-                            child: Hero(
-                              tag: 'lul',
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: 200,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: CachedNetworkImage(
-                                      errorWidget: (context, url, error) =>
-                                          Container(
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.error,
-                                                color: Theme.of(context)
-                                                    .accentColor,
-                                              ),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 200,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: CachedNetworkImage(
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.error,
+                                              color:
+                                                  Theme.of(context).accentColor,
                                             ),
                                           ),
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => Center(
-                                            child: Container(
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                                color: Theme.of(context)
-                                                    .primaryColorDark,
-                                                child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation(
-                                                          Theme.of(context)
-                                                              .accentColor),
-                                                ))),
-                                          ),
-                                      imageUrl: post),
-                                ),
+                                        ),
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(
+                                          child: Container(
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation(
+                                                        Theme.of(context)
+                                                            .accentColor),
+                                              ))),
+                                        ),
+                                    imageUrl: post),
                               ),
                             ),
                           ),
@@ -195,9 +234,12 @@ class Home extends StatelessWidget {
               width: 200,
               height: 200,
               child: ParallaxCard(
-                title: "Virtual Tour (hopefully)",
+                title: "Frosh Starter Kit",
                 imageAddress: 'assets/images/virtualtour.jpg',
-                onTapFunction: () {},
+                onTapFunction: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => StarterKit()));
+                },
               ),
             ),
             Container(
