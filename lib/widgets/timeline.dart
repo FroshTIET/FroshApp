@@ -95,7 +95,6 @@ class _FroshTimelineState extends State<_FroshTimeline> {
     _steps = _generateData();
 
     return Container(
-      color: const Color(0xFF1D1E20),
       child: Theme(
         data: Theme.of(context).copyWith(
           accentColor: Colors.white.withOpacity(0.2),

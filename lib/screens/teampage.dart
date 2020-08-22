@@ -26,6 +26,10 @@ class _TeamPageState extends State<TeamPage> {
     var mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       key: scaffoldState,
       body: Stack(
         children: <Widget>[

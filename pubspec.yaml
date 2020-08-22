@@ -44,7 +44,7 @@ dependencies:
   timeline_tile:
   dio:
   flutter_inappwebview:
-  firebase_messaging: 7.0.0
+  firebase_messaging: 6.0.13
   firebase_analytics: 6.0.0
   snaplist:    
 dev_dependencies:

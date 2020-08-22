@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:froshApp/screens/academics.dart';
 import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/screens/profile.dart';
@@ -43,7 +44,12 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         // children: List.generate(4, (index) => Home()),
-        children: [Home(), ShowcaseFroshTimeline(), TeamPage(), ProfilePage()],
+        children: [
+          Home(),
+          ShowcaseFroshTimeline(),
+          DashboardTwoPage(),
+          ProfilePage()
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
@@ -56,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
               SizedBox(width: 7.0),
               barIcon(icon: Icons.home, page: 0, title: "Home"),
               barIcon(icon: Icons.whatshot, page: 1, title: "TimeLine"),
-              barIcon(icon: Icons.bubble_chart, page: 2, title: "Team"),
+              barIcon(icon: Icons.bubble_chart, page: 2, title: "Study"),
               barIcon(icon: Icons.person, page: 3, title: "Profile"),
               SizedBox(width: 7.0),
             ],

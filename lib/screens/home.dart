@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:froshApp/screens/faq.dart';
+import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/util/places.dart';
 import 'package:froshApp/widgets/horizontal_place_item.dart';
@@ -12,22 +13,9 @@ import 'package:froshApp/widgets/vertical_place_item.dart';
 import 'package:froshApp/util/const.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'main_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  if (message.containsKey('data')) {
-    // Handle data message
-    final dynamic data = message['data'];
-  }
-
-  if (message.containsKey('notification')) {
-    // Handle notification message
-    final dynamic notification = message['notification'];
-  }
-
-  // Or do other work.
-}
 
 class HomeWrapper extends StatefulWidget {
   ThemeData currentTheme = Constants.lightTheme;
@@ -39,17 +27,29 @@ class _HomeWrapperState extends State<HomeWrapper> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String _title = '';
   String _message = '';
+
+  void _launchLogic(message) {
+    message = Map.from(message);
+    print(message);
+    try {
+      var notifAction = message['data']['url'];
+      _launchURL(notifAction);
+    } catch (e) {}
+  }
+
   void setUpMessaging() {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-          print('on message $message');
-          setState(() {
-            _title = message['notification']['title'];
-            _message = message['notification']['body'];
-          });
-        },
-        onResume: (Map<String, dynamic> message) async {},
-        onLaunch: (Map<String, dynamic> message) async {});
+      print('on message $message');
+      setState(() {
+        _title = message['notification']['title'];
+        _message = message['notification']['body'];
+      });
+    }, onResume: (Map<String, dynamic> message) async {
+      _launchLogic(message);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      _launchLogic(message);
+    });
 
     FlutterError.onError = null;
     _firebaseMessaging.getToken().then((token) => print("tokenkey: " + token));
@@ -235,7 +235,7 @@ class Home extends StatelessWidget {
               height: 200,
               child: ParallaxCard(
                 title: "Frosh Starter Kit",
-                imageAddress: 'assets/images/virtualtour.jpg',
+                imageAddress: 'assets/starterkit.jpg',
                 onTapFunction: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => StarterKit()));
@@ -246,9 +246,15 @@ class Home extends StatelessWidget {
               width: 200,
               height: 200,
               child: ParallaxCard(
-                title: "Queries",
-                imageAddress: 'assets/images/queries.png',
-                onTapFunction: () {},
+                title: "Our Team",
+                imageAddress: 'assets/images/1616109.jpg',
+                onTapFunction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TeamPage(),
+                      ));
+                },
               ),
             ),
             SingleChildScrollView(
@@ -339,5 +345,13 @@ class ShowSelectorWidget extends StatelessWidget {
       ),
       onTap: onTap,
     );
+  }
+}
+
+_launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

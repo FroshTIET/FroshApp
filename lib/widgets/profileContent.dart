@@ -38,11 +38,6 @@ class _HomeDrawerState extends State<HomeDrawer>
           icon: Icon(Icons.event),
           addDivider: true),
       DrawerList(
-        index: DrawerIndex.FeedBack,
-        labelName: 'The Harry Potter Club',
-        icon: Icon(Icons.home),
-      ),
-      DrawerList(
         index: DrawerIndex.Share,
         labelName: 'Rate the app',
         icon: Icon(Icons.share),
