@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_showcase/flutter_showcase.dart';
+import 'package:froshApp/models/constants.dart';
+import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -12,54 +15,6 @@ class ShowcaseFroshTimeline extends StatefulWidget {
 class _ShowcaseFroshTimelineState extends State<ShowcaseFroshTimeline> {
   @override
   Widget build(BuildContext context) {
-    // return Showcase(
-    //   title: 'Frosh Timeline',
-    //   app: _FroshTimelineApp(),
-    //   description: 'A beautiful timeline that tracks your steps, from one place'
-    //       ' to another.',
-    //   template: SimpleTemplate(reverse: false),
-    //   theme: TemplateThemeData(
-    //     frameTheme: FrameThemeData(
-    //       statusBarBrightness: Brightness.dark,
-    //       frameColor: Colors.black,
-    //     ),
-    //     flutterLogoColor: FlutterLogoColor.black,
-    //     brightness: Brightness.light,
-    //     backgroundColor: const Color(0xFFF2F2F2),
-    //     titleTextStyle: GoogleFonts.patrickHand(
-    //       fontSize: 80,
-    //     ),
-    //     descriptionTextStyle: GoogleFonts.patrickHand(
-    //       fontSize: 24,
-    //       height: 1.2,
-    //       color: const Color(0xFF1D1E20),
-    //     ),
-    //     buttonTextStyle: const TextStyle(
-    //       color: Color(0xFFF2F2F2),
-    //       fontWeight: FontWeight.bold,
-    //       letterSpacing: 2,
-    //     ),
-    //     buttonIconTheme: const IconThemeData(color: Colors.white),
-    //     buttonTheme: ButtonThemeData(
-    //       buttonColor: const Color(0xFF1D1E20),
-    //       shape: RoundedRectangleBorder(
-    //         borderRadius: BorderRadius.circular(50),
-    //       ),
-    //       textTheme: ButtonTextTheme.accent,
-    //       padding: const EdgeInsets.all(16),
-    //     ),
-    //   ),
-    //   links: [
-    //     LinkData.github('https://github.com/JHBitencourt/timeline_tile'),
-    //   ],
-    //   logoLink: LinkData(
-    //     icon: Image.asset(
-    //       'assets/built_by_jhb_black.png',
-    //       fit: BoxFit.fitHeight,
-    //     ),
-    //     url: 'https://github.com/JHBitencourt',
-    //   ),
-    // );
     return _FroshTimelineApp();
   }
 }
@@ -82,44 +37,99 @@ class _FroshTimeline extends StatefulWidget {
 }
 
 class _FroshTimelineState extends State<_FroshTimeline> {
-  List<Step> _steps;
-
   @override
   void initState() {
-    _steps = _generateData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _steps = _generateData();
-
-    return Container(
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          accentColor: Colors.white.withOpacity(0.2),
-        ),
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Center(
-              child: Column(
-                children: <Widget>[
-                  _Header(),
-                  Expanded(
-                    child: _TimelineFrosh(steps: _steps),
+    return FutureBuilder(
+        future: _generateData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ColorLoader3();
+          } else if (snapshot.data == null) {
+            return Container(
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  accentColor: Colors.white.withOpacity(0.2),
+                ),
+                child: SafeArea(
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Column(
+                      children: [
+                        _Header(),
+                        Expanded(
+                          child: Center(
+                              child: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Could not load the timeline. Please check your internet connection.",
+                                  style: TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            );
+          } else {
+            return Container(
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  accentColor: Colors.white.withOpacity(0.2),
+                ),
+                child: SafeArea(
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Center(
+                      child: Column(
+                        children: <Widget>[
+                          _Header(),
+                          Expanded(
+                            child: _TimelineFrosh(steps: snapshot.data),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+        });
   }
 
-  List<Step> _generateData() {
+  Future<List<Step>> _generateData() async {
+    Dio dio = new Dio();
+    List<Step> _stepList;
+
+    try {
+      Response response = await dio.get("$apiUrl/app/timeline");
+
+      _stepList =
+          await response.data.map<Step>((i) => Step.fromJson(i)).toList();
+    } catch (e) {}
+    await new Future.delayed(const Duration(milliseconds: 1000));
+    return _stepList;
     return <Step>[
       Step(
         type: Type.checkpoint,
@@ -142,13 +152,6 @@ class _FroshTimelineState extends State<_FroshTimeline> {
         duration: 12,
         color: const Color(0xFF797979),
       ),
-      // Step(
-      //   type: Type.line,
-      //   hour: '21st Aug',
-      //   message: 'Run',
-      //   duration: 3,
-      //   color: const Color(0xFFDF54C9),
-      // ),
       Step(
         type: Type.line,
         hour: '21st Aug',
@@ -372,14 +375,35 @@ class Step {
     this.icon,
   });
 
-  final Type type;
-  final String hour;
-  final String message;
-  final int duration;
-  final Color color;
-  final IconData icon;
+  Type type;
+  String hour;
+  String message;
+  int duration;
+  Color color;
+  IconData icon;
 
   bool get isCheckpoint => type == Type.checkpoint;
 
   bool get hasHour => hour != null && hour.isNotEmpty;
+
+  Step.fromJson(Map<String, dynamic> json) {
+    type = json['event_type'] == "checkpoint" ? Type.checkpoint : Type.line;
+    hour = json['date'];
+    message = json['title'];
+    duration = json['duration'];
+    color = HexColor(json['color']);
+    icon = IconData(json['icon'], fontFamily: 'MaterialIcons');
+  }
+}
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }

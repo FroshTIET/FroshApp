@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:froshApp/models/constants.dart';
+import 'package:froshApp/models/featured.dart';
 import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/util/places.dart';
+import 'package:froshApp/util/snackbar_helper.dart';
+import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:froshApp/widgets/horizontal_place_item.dart';
-import 'package:froshApp/widgets/icon_badge.dart';
 import 'package:froshApp/widgets/parallaxCard.dart';
-import 'package:froshApp/widgets/search_bar.dart';
 import 'package:froshApp/widgets/vertical_place_item.dart';
 import 'package:froshApp/util/const.dart';
 import 'package:provider/provider.dart';
@@ -76,46 +79,36 @@ class _HomeWrapperState extends State<HomeWrapper> {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  Dio dio;
+
+  Future<List<FeaturedEvent>> getPosts() async {
+    List<FeaturedEvent> _list = null;
+    try {
+      Response response = await this.dio.get("$apiUrl/app/featured/");
+      _list = response.data
+          .map<FeaturedEvent>((i) => FeaturedEvent.fromJson(i))
+          .toList();
+    } catch (e) {}
+    await new Future.delayed(const Duration(milliseconds: 500));
+    return _list;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.dio = new Dio();
+  }
+
   @override
   Widget build(BuildContext context) {
     var top = 0.0;
-    List posts = [
-      "https://img.wallpapersafari.com/desktop/1680/1050/61/10/9W7j8L.jpg",
-      "https://i.ytimg.com/vi/woOzxGLqXL8/maxresdefault.jpg",
-      "https://static.rfstat.com/media/Thumbnails/Gallery_2019/12_12_2019/73_Event_Teaser_Promo_Pack/244b3826-6963-4546-b71f-d4e75786c188.jpg"
-    ];
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: <Widget>[
-      //     IconButton(
-      //       icon: Icon(Icons.settings),
-      //       onPressed: Provider.of<ThemeProvider>(context).switchTheme,
-      //     ),
-      //   ],
-      // ),
-
-      // body: ListView(
-      //   physics: BouncingScrollPhysics(),
-      //   children: <Widget>[
-      //     Padding(
-      //       padding: EdgeInsets.all(20.0),
-      //       child: Text(
-      //         "Where are you \ngoing?",
-      //         style: TextStyle(
-      //           fontSize: 30.0,
-      //           fontWeight: FontWeight.w600,
-      //         ),
-      //       ),
-      //     ),
-      //     // Padding(
-      //     //   padding: EdgeInsets.all(20.0),
-      //     //   child: SearchBar(),
-      //     // ),
-      //     buildHorizontalList(context),
-      //     buildVerticalList(),
-      //   ],
-      // ),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -152,81 +145,99 @@ class Home extends StatelessWidget {
         body: ListView(
           physics: BouncingScrollPhysics(),
           children: [
-            ShowSelectorWidget(
-              title: "Upcoming Events",
+            GestureDetector(
+              onTap: () => this.getPosts(),
+              child: ShowSelectorWidget(
+                title: "Upcoming Events",
+              ),
             ),
-            CarouselSlider(
-              enlargeCenterPage: true,
-              autoPlay: true,
-              height: 200.0,
-              viewportFraction: 0.8,
-              items: posts.map((post) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        // onTap: () {
-                        //   Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => WallpaperPage(
-                        //                 heroId: '${post.name}',
-                        //                 posts: posts,
-                        //                 index: posts.indexOf(post),
-                        //               )));
-                        // },
-                        child: Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: GestureDetector(
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 200,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: CachedNetworkImage(
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.error,
-                                              color:
-                                                  Theme.of(context).accentColor,
-                                            ),
-                                          ),
-                                        ),
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Center(
-                                          child: Container(
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                              child: Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation(
-                                                        Theme.of(context)
-                                                            .accentColor),
-                                              ))),
-                                        ),
-                                    imageUrl: post),
-                              ),
-                            ),
-                          ),
+            FutureBuilder(
+                future: getPosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: ColorLoader3(),
+                    );
+                  } else if (snapshot.data == null) {
+                    return Container(
+                      height: 100,
+                      child: Center(
+                        child: Icon(
+                          Icons.error,
+                          size: 40,
                         ),
                       ),
                     );
-                  },
-                );
-              }).toList(),
-            ),
+                  } else {
+                    return CarouselSlider(
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      height: 200.0,
+                      viewportFraction: 0.8,
+                      items: snapshot.data.map<Widget>((post) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () => _launchURL(post.redirectUrl),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: 200,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: CachedNetworkImage(
+                                            errorWidget: (context, url,
+                                                    error) =>
+                                                Container(
+                                                  width: double.infinity,
+                                                  height: double.infinity,
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.error,
+                                                      color: Theme.of(context)
+                                                          .accentColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                Center(
+                                                  child: Container(
+                                                      width: double.infinity,
+                                                      height: double.infinity,
+                                                      color: Theme.of(context)
+                                                          .primaryColorDark,
+                                                      child: Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation(
+                                                                Theme.of(
+                                                                        context)
+                                                                    .accentColor),
+                                                      ))),
+                                                ),
+                                            imageUrl: post.imageLink),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    );
+                  }
+                }),
             SizedBox(
               height: 10,
             ),
@@ -335,7 +346,7 @@ class ShowSelectorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      trailing: Icon(Icons.info),
+      trailing: Icon(Icons.info_outline),
       hoverColor: Colors.grey,
       title: Text(
         title,

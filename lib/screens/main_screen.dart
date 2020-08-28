@@ -7,6 +7,7 @@ import 'package:froshApp/screens/profile.dart';
 import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/widgets/icon_badge.dart';
+import 'package:froshApp/widgets/keepalvie.dart';
 import 'package:froshApp/widgets/timeline.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,8 @@ class TestWidget extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key key}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -45,10 +48,14 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         // children: List.generate(4, (index) => Home()),
         children: [
-          Home(),
-          ShowcaseFroshTimeline(),
-          DashboardTwoPage(),
-          ProfilePage()
+          KeepAlivePage(child: Home()),
+          KeepAlivePage(
+            child: ShowcaseFroshTimeline(),
+          ),
+          KeepAlivePage(
+            child: DashboardTwoPage(),
+          ),
+          KeepAlivePage(child: ProfilePage()),
         ],
       ),
       bottomNavigationBar: BottomAppBar(

@@ -47,6 +47,7 @@ dependencies:
   firebase_messaging: 6.0.13
   firebase_analytics: 6.0.0
   snaplist:    
+  flushbar: 1.10.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
