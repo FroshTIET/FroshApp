@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:froshApp/login/loginScreen.dart';
+import 'package:froshApp/main.dart';
+import 'package:froshApp/models/constants.dart';
+import 'package:froshApp/models/student.dart';
+import 'package:froshApp/util/getProfileInfo.dart';
+import 'package:froshApp/util/snackbar_helper.dart';
+import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class HomeDrawer extends StatefulWidget {
@@ -50,24 +57,134 @@ class _HomeDrawerState extends State<HomeDrawer>
     ];
   }
 
+  Future<List<DrawerList>> getDrawerList() async {
+    Student _student = await getProfileDetails(userToken);
+
+    List<DrawerList> drawerList = <DrawerList>[
+      DrawerList(
+        index: DrawerIndex.HOME,
+        labelName: _student.fullName,
+        icon: Icon(Icons.person),
+      ),
+      DrawerList(
+        index: DrawerIndex.Help,
+        labelName: _student.rollNumber,
+        icon: Icon(Icons.art_track),
+      ),
+      DrawerList(
+        index: DrawerIndex.Invite,
+        labelName: _student.branch == null ? "" : _student.branch,
+        icon: Icon(Icons.book),
+      ),
+      DrawerList(
+          index: DrawerIndex.Invite,
+          labelName: _student.birthday == null ? "" : _student.birthday,
+          icon: Icon(Icons.event),
+          addDivider: true),
+      DrawerList(
+        index: DrawerIndex.Share,
+        labelName: 'Rate the app',
+        icon: Icon(Icons.share),
+      ),
+      DrawerList(
+        index: DrawerIndex.About,
+        labelName: 'Log out',
+        icon: Icon(Icons.logout),
+        redirectPage: MyApp(),
+      ),
+    ];
+    // drawerList.add(DrawerList(
+    //   index: DrawerIndex.HOME,
+    //   labelName: _student.fullName,
+    //   icon: Icon(Icons.person),
+    // ));
+    // print(drawerList.length);
+    // drawerList.addAll([
+    //   DrawerList(
+    //     index: DrawerIndex.HOME,
+    //     labelName: _student.fullName,
+    //     icon: Icon(Icons.person),
+    //   ),
+    //   DrawerList(
+    //     index: DrawerIndex.Help,
+    //     labelName: _student.rollNumber,
+    //     icon: Icon(Icons.art_track),
+    //   ),
+    //   DrawerList(
+    //     index: DrawerIndex.Invite,
+    //     labelName: _student.branch,
+    //     icon: Icon(Icons.book),
+    //   ),
+    //   DrawerList(
+    //       index: DrawerIndex.Invite,
+    //       labelName: _student.birthday,
+    //       icon: Icon(Icons.event),
+    //       addDivider: true),
+    //   DrawerList(
+    //     index: DrawerIndex.Share,
+    //     labelName: 'Rate the app',
+    //     icon: Icon(Icons.share),
+    //   ),
+    //   DrawerList(
+    //     index: DrawerIndex.About,
+    //     labelName: 'About Us',
+    //     icon: Icon(Icons.info),
+    //   ),
+    // ]);
+    // print(drawerList);
+    return drawerList;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(0.0),
-            itemCount: drawerList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return inkwell(drawerList[index]);
-            },
-          ),
-        ),
-      ],
-    );
+    return FutureBuilder(
+        future: getDrawerList(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: ColorLoader3(),
+            );
+          } else if (snapshot.data == null) {
+            return Container(
+              height: 900,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Icon(
+                      Icons.error,
+                      size: 40,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text("Failed to load user information"),
+                  )
+                ],
+              ),
+            );
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(0.0),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return inkwell(snapshot.data[index]);
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+        });
   }
 
   Widget inkwell(DrawerList listData) {
@@ -76,7 +193,15 @@ class _HomeDrawerState extends State<HomeDrawer>
       child: InkWell(
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
-        onTap: () {},
+        onTap: () {
+          listData.redirectPage != null
+              ? Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => listData.redirectPage),
+                  (Route<dynamic> route) => false)
+              : null;
+        },
         child: Column(
           children: <Widget>[
             Container(
@@ -130,17 +255,18 @@ enum DrawerIndex {
 }
 
 class DrawerList {
-  DrawerList({
-    this.addDivider = false,
-    this.labelName = '',
-    this.icon,
-    this.index,
-    this.imageName = '',
-  });
+  DrawerList(
+      {this.addDivider = false,
+      this.labelName = '',
+      this.icon,
+      this.index,
+      this.imageName = '',
+      this.redirectPage});
 
   String labelName;
   Icon icon;
   bool addDivider;
   String imageName;
   DrawerIndex index;
+  Widget redirectPage;
 }

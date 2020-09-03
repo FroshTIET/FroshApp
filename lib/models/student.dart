@@ -8,6 +8,8 @@ class Student {
   String birthday;
   int points;
   String phoneNumber;
+  String whatsappLink;
+  String profilePic;
 
   Student(
       {this.id,
@@ -18,7 +20,9 @@ class Student {
       this.gender,
       this.birthday,
       this.points,
-      this.phoneNumber});
+      this.phoneNumber,
+      this.whatsappLink,
+      this.profilePic});
 
   Student.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,6 +34,8 @@ class Student {
     birthday = json['birthday'];
     points = json['points'];
     phoneNumber = json['phone_number'];
+    whatsappLink = json['whatsapp_link'];
+    profilePic = json['profile_pic'];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +51,8 @@ class Student {
     data['birthday'] = this.birthday;
     data['points'] = this.points;
     data['phone_number'] = this.phoneNumber;
+    data['whatsapp_link'] = this.whatsappLink;
+    data['profile_pic'] = this.profilePic;
     return data;
   }
 }

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:froshApp/screens/academics.dart';
-import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/screens/profile.dart';
-import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
-import 'package:froshApp/widgets/icon_badge.dart';
 import 'package:froshApp/widgets/keepalvie.dart';
 import 'package:froshApp/widgets/timeline.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:froshApp/apiHelpers/helperFunctions.dart';
+import 'package:froshApp/models/constants.dart';
+import 'package:froshApp/models/student.dart';
+import 'package:froshApp/util/getProfileInfo.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DashboardTwoPage extends StatelessWidget {
@@ -31,60 +35,66 @@ class DashboardTwoPage extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 190,
-                      color: Colors.blue,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text("How to",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18)),
-                            trailing: Icon(
-                              FontAwesomeIcons.table,
-                              color: Colors.white,
+                    GestureDetector(
+                      onTap: () async {
+                        _launchURL("https://youtu.be/6X8L-G7GyGU");
+                      },
+                      child: Container(
+                        height: 190,
+                        color: Colors.blue,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text("How to",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18)),
+                              trailing: Icon(
+                                FontAwesomeIcons.table,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              'read the Timetable',
-                              style: whiteText,
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'read the Timetable',
+                                style: whiteText,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    Container(
-                      height: 120,
-                      color: Colors.green,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "Join",
-                              style:
-                                  Theme.of(context).textTheme.display1.copyWith(
-                                        color: Colors.white,
-                                        fontSize: 24.0,
-                                      ),
+                    GestureDetector(
+                      onTap: () async {
+                        Student _student = await getProfileDetails(userToken);
+                        _launchURL(_student.whatsappLink);
+                      },
+                      child: Container(
+                        height: 120,
+                        color: Colors.green,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text("Join",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24)),
+                              trailing: Icon(
+                                FontAwesomeIcons.whatsapp,
+                                color: Colors.white,
+                              ),
                             ),
-                            trailing: Icon(
-                              FontAwesomeIcons.whatsapp,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              'Whatsapp Group',
-                              style: whiteText,
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Whatsapp Group',
+                                style: whiteText,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -95,6 +105,9 @@ class DashboardTwoPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     GestureDetector(
+                      onTap: () {
+                        _launchURL("https://murphy-lms.thapar.edu/moodle/");
+                      },
                       child: Container(
                         height: 120,
                         color: Colors.red,

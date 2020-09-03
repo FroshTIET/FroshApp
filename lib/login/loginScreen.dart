@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:froshApp/models/constants.dart';
 import 'package:froshApp/screens/home.dart';
 import 'package:froshApp/theme/colorTheme.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -18,7 +20,7 @@ class LoginScreen extends StatelessWidget {
       title: 'FROSH 2K20',
       emailValidator: emailValidator,
       passwordValidator: passwordValidator,
-      onLogin: (_data) => authUser(_data),
+      onLogin: (_data) => getAuthToken(_data),
       onSignup: (_data) => registerUser(_data),
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -70,6 +72,46 @@ class LoginScreen extends StatelessWidget {
 }
 
 Duration get loginTime => Duration(milliseconds: 2250);
+
+Future<String> getAuthToken(LoginData data) async {
+  Dio dio = new Dio();
+  try {
+    Response response = await dio.post("$apiUrl/api-token-auth/",
+        data: {"username": data.name, "password": data.password});
+    userToken = response.data['token'];
+    return null;
+  } catch (e) {
+    if (e is DioError) {
+      DioError dioError = e;
+      switch (dioError.type) {
+        case DioErrorType.CANCEL:
+          return "Request to the Frosh server was cancelled";
+          break;
+        case DioErrorType.CONNECT_TIMEOUT:
+          return "Connection timeout with the Frosh server";
+          break;
+        case DioErrorType.DEFAULT:
+          return "Please check your internet connection.";
+          break;
+        case DioErrorType.RECEIVE_TIMEOUT:
+          return "Receive timeout in connection with the Frosh server";
+          break;
+        case DioErrorType.RESPONSE:
+          if (e.response.statusCode == 400) {
+            return "Incorrect username and password.";
+          } else {
+            return "Received invalid status code: ${dioError.response.statusCode}";
+          }
+
+          break;
+        case DioErrorType.SEND_TIMEOUT:
+          return "Send timeout in connection with the Frosh server";
+          break;
+      }
+    }
+    return "An unkown error occured";
+  }
+}
 
 Future<String> authUser(LoginData data) async {
   return Future.delayed(loginTime).then((_) async {

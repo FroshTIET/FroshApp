@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:froshApp/models/constants.dart';
 import 'package:froshApp/screens/faq.dart';
+import 'package:froshApp/util/getProfileInfo.dart';
+import 'package:froshApp/util/snackbar_helper.dart';
+import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:froshApp/widgets/profileContent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:RetailAssistant/utilities/sizeConfig.dart';
@@ -30,113 +34,102 @@ class _ProfilePageState extends State<ProfilePage> {
                   top: 10 * MediaQuery.of(context).size.height / 100),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        height: 11 * MediaQuery.of(context).size.height / 100,
-                        width: 22 * MediaQuery.of(context).size.width / 100,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage("assets/1.jpeg"))),
-                      ),
-                      SizedBox(
-                        width: 5 * MediaQuery.of(context).size.width / 100,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.55,
-                            child: Text(
-                              "Naman Monga",
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 5 *
-                                      MediaQuery.of(context).size.width /
-                                      100,
-                                  fontWeight: FontWeight.bold),
+                  FutureBuilder(
+                      future: getProfileDetails(userToken),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: ColorLoader3(),
+                          );
+                        } else if (snapshot.data == null) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            showErrorToast(context, snapshot.error);
+                          });
+                          return Container(
+                            height: 100,
+                            child: Center(
+                              child: Icon(
+                                Icons.error,
+                                size: 40,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height:
-                                1 * MediaQuery.of(context).size.height / 100,
-                          ),
-                          Row(
+                          );
+                        } else {
+                          return Row(
                             children: <Widget>[
-                              Icon(
-                                Icons.alternate_email,
-                                color: Colors.grey,
+                              Container(
+                                height: 11 *
+                                    MediaQuery.of(context).size.height /
+                                    100,
+                                width: 22 *
+                                    MediaQuery.of(context).size.width /
+                                    100,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(apiUrl +
+                                            snapshot.data.profilePic))),
                               ),
                               SizedBox(
-                                width: 2,
+                                width:
+                                    5 * MediaQuery.of(context).size.width / 100,
                               ),
-                              Text(
-                                "elephants@gmail.com",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 1.8 *
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.55,
+                                    child: Text(
+                                      snapshot.data.fullName,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 5 *
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              100,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 1 *
                                         MediaQuery.of(context).size.height /
                                         100,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              //     Row(
-                              //       children: <Widget>[
-                              //         Icon(
-                              //           Icons.shopping_cart,
-                              //           color: Colors.white,
-                              //           size: 15,
-                              //         ),
-                              //         SizedBox(
-                              //           width: 1 *
-                              //               MediaQuery.of(context).size.width /
-                              //               100,
-                              //         ),
-                              //         Text(
-                              //           "5 Orders",
-                              //           style: TextStyle(
-                              //             color: Colors.white60,
-                              //             fontSize: 2 *
-                              //                 MediaQuery.of(context).size.height /
-                              //                 100,
-                              //           ),
-                              //         ),
-                              //         SizedBox(
-                              //           width: 3 *
-                              //               MediaQuery.of(context).size.width /
-                              //               100,
-                              //         ),
-                              //         Icon(
-                              //           Icons.language,
-                              //           color: Colors.white,
-                              //           size: 15,
-                              //         ),
-                              //         SizedBox(
-                              //           width: 1 *
-                              //               MediaQuery.of(context).size.width /
-                              //               100,
-                              //         ),
-                              //         Text(
-                              //           "English",
-                              //           style: TextStyle(
-                              //             color: Colors.white60,
-                              //             fontSize: 2 *
-                              //                 MediaQuery.of(context).size.height /
-                              //                 100,
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.alternate_email,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
+                                      Text(
+                                        snapshot.data.user.email,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 1.8 *
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                100,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                          );
+                        }
+                      }),
                   SizedBox(
                     height: 3 * MediaQuery.of(context).size.height / 100,
                   ),
@@ -149,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Column(
                           children: <Widget>[
                             Text(
-                              "69420",
+                              "Patiala",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 5 *
@@ -158,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "Total Frosh Score",
+                              "Campus Location",
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize:
@@ -182,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "Event Ranking",
+                              "Frosh Ranking",
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize:
@@ -209,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "Refresh Stats",
+                                "Refresh Info",
                                 style: TextStyle(
                                     color: Colors.white60,
                                     fontSize: 3 *
