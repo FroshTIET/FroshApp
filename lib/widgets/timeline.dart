@@ -127,9 +127,11 @@ class _FroshTimelineState extends State<_FroshTimeline> {
 
       _stepList =
           await response.data.map<Step>((i) => Step.fromJson(i)).toList();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     await new Future.delayed(const Duration(milliseconds: 500));
-    // return _stepList;
+    return _stepList;
     return <Step>[
       Step(
         type: Type.checkpoint,

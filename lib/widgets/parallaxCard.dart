@@ -56,7 +56,7 @@ class _ParallaxCardState extends State<ParallaxCard> {
                 fit: StackFit.expand,
                 children: [
                   Container(
-                    child: Image.asset(
+                    child: Image.network(
                       widget.imageAddress,
                       fit: BoxFit.cover,
                     ),

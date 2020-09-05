@@ -48,6 +48,9 @@ dependencies:
   firebase_analytics: 6.0.0
   snaplist:    
   flushbar: 1.10.4
+  flutter_cube: ^0.0.3
+  motion_sensors: ^0.0.1
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
