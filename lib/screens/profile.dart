@@ -6,6 +6,7 @@ import 'package:froshApp/util/getProfileInfo.dart';
 import 'package:froshApp/util/snackbar_helper.dart';
 import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:froshApp/widgets/profileContent.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:RetailAssistant/utilities/sizeConfig.dart';
 
@@ -26,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
         overflow: Overflow.visible,
         children: <Widget>[
           Container(
-            color: Colors.blueGrey[900],
+            color: Color(0xff2e78c3),
             height: MediaQuery.of(context).size.height,
             child: Padding(
               padding: EdgeInsets.only(
@@ -88,14 +89,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                       maxLines: 1,
-                                      style: TextStyle(
+                                      style: GoogleFonts.montserrat(
                                           color: Colors.white,
-                                          fontSize: 5 *
-                                              MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              100,
-                                          fontWeight: FontWeight.bold),
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1),
                                     ),
                                   ),
                                   SizedBox(
@@ -107,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: <Widget>[
                                       Icon(
                                         Icons.alternate_email,
-                                        color: Colors.grey,
+                                        color: Colors.white.withAlpha(200),
                                       ),
                                       SizedBox(
                                         width: 2,
@@ -115,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Text(
                                         snapshot.data.user.email,
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: Colors.white.withAlpha(200),
                                             fontSize: 1.8 *
                                                 MediaQuery.of(context)
                                                     .size
@@ -167,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Column(
                           children: <Widget>[
                             Text(
-                              "3rd",
+                              "2024",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 5 *
@@ -176,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "Frosh Ranking",
+                              "Batch of",
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize:
@@ -206,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Text(
                                 "Notifications",
                                 style: TextStyle(
-                                    color: Colors.white70,
+                                    color: Colors.white.withAlpha(220),
                                     fontSize: 3 *
                                         MediaQuery.of(context).size.width /
                                         100),

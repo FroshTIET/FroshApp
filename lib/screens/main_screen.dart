@@ -112,7 +112,7 @@ class _MainScreenState extends State<MainScreen> {
     // );
     var isSelected = _page == page;
     final Duration animationDuration = const Duration(milliseconds: 250);
-    const Color selectedColor = Colors.red;
+    const Color selectedColor = Color(0xFF2e78c3);
     const Color backgroundColor = Colors.white;
     const Color unselectedColor = Colors.black;
 

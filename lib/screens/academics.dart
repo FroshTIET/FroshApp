@@ -4,6 +4,7 @@ import 'package:froshApp/apiHelpers/helperFunctions.dart';
 import 'package:froshApp/models/constants.dart';
 import 'package:froshApp/models/student.dart';
 import 'package:froshApp/util/getProfileInfo.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DashboardTwoPage extends StatelessWidget {
@@ -12,11 +13,13 @@ class DashboardTwoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey.shade800,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Academics"),
+        title: Text(
+          "ACADEMICS",
+          style: GoogleFonts.openSans(letterSpacing: 3, fontSize: 20),
+        ),
         centerTitle: true,
       ),
       body: _buildBody(context),
@@ -41,14 +44,16 @@ class DashboardTwoPage extends StatelessWidget {
                       },
                       child: Container(
                         height: 190,
-                        color: Colors.blue,
+                        color: Color(0xff2e77c3),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ListTile(
                               title: Text("How to",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18)),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
                               trailing: Icon(
                                 FontAwesomeIcons.table,
                                 color: Colors.white,
@@ -58,7 +63,10 @@ class DashboardTwoPage extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 16.0),
                               child: Text(
                                 'read the Timetable',
-                                style: whiteText,
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.white,
+                                    fontSize: 14),
                               ),
                             )
                           ],
@@ -73,14 +81,16 @@ class DashboardTwoPage extends StatelessWidget {
                       },
                       child: Container(
                         height: 120,
-                        color: Colors.green,
+                        color: Color(0xff00c8e9),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ListTile(
                               title: Text("Join",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24)),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
                               trailing: Icon(
                                 FontAwesomeIcons.whatsapp,
                                 color: Colors.white,
@@ -90,7 +100,10 @@ class DashboardTwoPage extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 16.0),
                               child: Text(
                                 'Whatsapp Group',
-                                style: whiteText,
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.white,
+                                    fontSize: 16),
                               ),
                             )
                           ],
@@ -110,17 +123,17 @@ class DashboardTwoPage extends StatelessWidget {
                       },
                       child: Container(
                         height: 120,
-                        color: Colors.red,
+                        color: Color(0xff00c8e9),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ListTile(
                               title: Text(
                                 "LMS",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.0,
-                                ),
+                                style: GoogleFonts.montserrat(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                               trailing: Icon(
                                 FontAwesomeIcons.users,
@@ -129,43 +142,50 @@ class DashboardTwoPage extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                'Student Portal',
-                                style: whiteText,
-                              ),
+                              child: Text('Student Portal',
+                                  style: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white,
+                                      fontSize: 15)),
                             )
                           ],
                         ),
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    Container(
-                      height: 190,
-                      color: Colors.yellow,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "Study",
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                color: Colors.black,
+                    GestureDetector(
+                      onTap: () {
+                        _launchURL("https://ln-k.cf/studymat");
+                      },
+                      child: Container(
+                        height: 190,
+                        color: Color(0xff2e77c3),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text("Study",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              trailing: Icon(
+                                FontAwesomeIcons.book,
+                                color: Colors.white,
                               ),
                             ),
-                            trailing: Icon(
-                              FontAwesomeIcons.book,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: Text(
-                              'Material',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Material',
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.white,
+                                    fontSize: 16),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -179,6 +199,10 @@ class DashboardTwoPage extends StatelessWidget {
   }
 
   Widget _buildHeader() {
+    final today = DateTime.now();
+    final startClass = DateTime(2020, 09, 22);
+    int difference = startClass.difference(today).inDays;
+    if (difference < 0) difference = 0;
     return Row(
       children: <Widget>[
         Container(
@@ -186,9 +210,9 @@ class DashboardTwoPage extends StatelessWidget {
           width: 100,
           padding: const EdgeInsets.all(8.0),
           child: CircularProgressIndicator(
-            value: 0.4,
+            value: difference / 20,
             valueColor: AlwaysStoppedAnimation(Colors.blue),
-            backgroundColor: Colors.grey.shade700,
+            backgroundColor: Colors.grey.shade200,
           ),
         ),
         const SizedBox(width: 20.0),
@@ -198,12 +222,14 @@ class DashboardTwoPage extends StatelessWidget {
             children: <Widget>[
               Text(
                 "Initiation of Classes",
-                style: whiteText.copyWith(fontSize: 20.0),
+                style:
+                    GoogleFonts.montserrat(color: Colors.black, fontSize: 20),
               ),
               const SizedBox(height: 15.0),
               Text(
-                "15 days to go",
-                style: TextStyle(color: Colors.grey, fontSize: 16.0),
+                "$difference day" + ((difference != 1) ? "s to go" : " to go"),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(200), fontSize: 16.0),
               ),
             ],
           ),

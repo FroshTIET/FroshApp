@@ -16,6 +16,7 @@ import 'package:froshApp/widgets/horizontal_place_item.dart';
 import 'package:froshApp/widgets/parallaxCard.dart';
 import 'package:froshApp/widgets/vertical_place_item.dart';
 import 'package:froshApp/util/const.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -129,23 +130,24 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var top = 0.0;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white.withAlpha(220),
-        child: Icon(
-          LineAwesomeIcons.codepen,
-          size: 30,
-        ),
-        onPressed: () async {
-          List<String> _imageLists = await getVirtTourImages();
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white.withAlpha(220),
+      //   child: Icon(
+      //     LineAwesomeIcons.codepen,
+      //     color: Colors.black,
+      //     size: 30,
+      //   ),
+      //   onPressed: () async {
+      //     List<String> _imageLists = await getVirtTourImages();
 
-          _imageLists == null
-              ? null
-              : Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => VirtualTour(_imageLists)));
-        },
-      ),
+      //     _imageLists == null
+      //         ? null
+      //         : Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (context) => VirtualTour(_imageLists)));
+      //   },
+      // ),
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -161,15 +163,17 @@ class _HomeState extends State<Home> {
                       title: AnimatedOpacity(
                           opacity: top <= 100 ? 1.0 : 0.0,
                           duration: Duration(milliseconds: 200),
-                          child: Text("Frosh 2K20")),
+                          child: Text(
+                            "FROSH 2020",
+                            style: GoogleFonts.openSans(letterSpacing: 3),
+                          )),
                       centerTitle: true,
                       background: ClipRRect(
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(40),
                             bottomRight: Radius.circular(40)),
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: "$apiUrl/imageassets/frosh.png",
+                        child: Image.asset(
+                          "assets/homepage/banner3.jpg",
                           fit: BoxFit.fill,
                         ),
                       ));
@@ -281,8 +285,8 @@ class _HomeState extends State<Home> {
               width: 200,
               height: 200,
               child: ParallaxCard(
-                title: "Frosh Starter Kit",
-                imageAddress: '$apiUrl/imageassets/starter.png',
+                title: "",
+                imageAddress: 'assets/homepage/starter_kit.jpg',
                 onTapFunction: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => StarterKit()));
@@ -293,8 +297,8 @@ class _HomeState extends State<Home> {
               width: 200,
               height: 200,
               child: ParallaxCard(
-                title: "Our Team",
-                imageAddress: '$apiUrl/imageassets/team.png',
+                title: "",
+                imageAddress: 'assets/homepage/ourteam.png',
                 onTapFunction: () {
                   Navigator.push(
                       context,
@@ -313,8 +317,8 @@ class _HomeState extends State<Home> {
                     width: 200,
                     height: 200,
                     child: ParallaxCard(
-                      title: "Societies",
-                      imageAddress: '$apiUrl/imageassets/society.png',
+                      title: "",
+                      imageAddress: 'assets/homepage/societies.jpg',
                       onTapFunction: () {
                         _launchURL(
                             "https://froshtiet.com/starter-kit/SocietiesInThapar.html");
@@ -326,7 +330,7 @@ class _HomeState extends State<Home> {
                     height: 200,
                     child: ParallaxCard(
                       title: "Events",
-                      imageAddress: '$apiUrl/imageassets/event.png',
+                      imageAddress: 'assets/homepage/events.jpg',
                       onTapFunction: () {
                         _launchURL("https://froshtiet.com/events/");
                       },

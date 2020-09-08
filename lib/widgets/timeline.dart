@@ -61,6 +61,9 @@ class _FroshTimelineState extends State<_FroshTimeline> {
                     body: Column(
                       children: [
                         _Header(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Expanded(
                           child: Center(
                               child: Container(
@@ -97,17 +100,23 @@ class _FroshTimelineState extends State<_FroshTimeline> {
                   accentColor: Colors.white.withOpacity(0.2),
                 ),
                 child: SafeArea(
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: Center(
-                      child: Column(
-                        children: <Widget>[
-                          _Header(),
-                          Expanded(
-                            child: _TimelineFrosh(steps: snapshot.data),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/map.jpg'),
+                            fit: BoxFit.cover)),
+                    child: Scaffold(
+                      backgroundColor: Colors.white.withAlpha(50),
+                      body: Center(
+                        child: Column(
+                          children: <Widget>[
+                            _Header(),
+                            Expanded(
+                              child: _TimelineFrosh(steps: snapshot.data),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -245,7 +254,7 @@ class _TimelineFrosh extends StatelessWidget {
           hasIndicator: step.isCheckpoint,
           topLineStyle: LineStyle(
             color: step.color,
-            width: 8,
+            width: 5,
           ),
         );
       },
@@ -254,19 +263,19 @@ class _TimelineFrosh extends StatelessWidget {
 
   IndicatorStyle _indicatorStyleCheckpoint(Step step) {
     return IndicatorStyle(
-      width: 46,
-      height: 100,
+      width: 50,
+      height: 50,
       indicator: Container(
         decoration: BoxDecoration(
           color: step.color,
           borderRadius: const BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(30),
           ),
         ),
         child: Center(
           child: Icon(
             step.icon,
-            color: const Color(0xFF1D1E20),
+            color: Colors.white,
             size: 30,
           ),
         ),
@@ -298,8 +307,8 @@ class _RightChildTimeline extends StatelessWidget {
               text: TextSpan(children: <TextSpan>[
                 TextSpan(
                   text: step.message,
-                  style: GoogleFonts.itim(
-                    fontSize: 22,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18,
                     color: step.color,
                   ),
                 ),
@@ -327,9 +336,9 @@ class _LeftChildTimeline extends StatelessWidget {
           child: Text(
             step.hour,
             textAlign: TextAlign.center,
-            style: GoogleFonts.patrickHand(
-              fontSize: 16,
-              color: Colors.white.withOpacity(0.6),
+            style: GoogleFonts.openSans(
+              fontSize: 12,
+              color: Colors.black.withOpacity(0.8),
             ),
           ),
         )
@@ -341,22 +350,25 @@ class _LeftChildTimeline extends StatelessWidget {
 class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              'Event Timeline',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.patrickHand(
-                fontSize: 36,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                'EVENT TIMELINE',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.openSans(
+                    fontSize: 20,
+                    color: Colors.black,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.w600),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

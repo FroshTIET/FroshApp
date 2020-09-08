@@ -7,6 +7,7 @@ import 'package:froshApp/util/getProfileInfo.dart';
 import 'package:froshApp/util/snackbar_helper.dart';
 import 'package:froshApp/widgets/colorLoader.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override
@@ -85,6 +86,7 @@ class _HomeDrawerState extends State<HomeDrawer>
         index: DrawerIndex.Share,
         labelName: 'Rate the app',
         icon: Icon(Icons.share),
+        redirectLink: "https://ln-k.cf/froshrate",
       ),
       DrawerList(
         index: DrawerIndex.About,
@@ -203,6 +205,8 @@ class _HomeDrawerState extends State<HomeDrawer>
                 context,
                 MaterialPageRoute(builder: (context) => listData.redirectPage),
                 (Route<dynamic> route) => false);
+          } else if (listData.redirectLink != null) {
+            _launchURL(listData.redirectLink);
           }
         },
         child: Column(
@@ -264,7 +268,8 @@ class DrawerList {
       this.icon,
       this.index,
       this.imageName = '',
-      this.redirectPage});
+      this.redirectPage,
+      this.redirectLink});
 
   String labelName;
   Icon icon;
@@ -272,4 +277,13 @@ class DrawerList {
   String imageName;
   DrawerIndex index;
   Widget redirectPage;
+  String redirectLink;
+}
+
+_launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
 }

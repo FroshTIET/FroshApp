@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static String appName = "Flutter Travel";
+  static String appName = "Frosh 2K20";
 
   //Colors for theme
   static Color lightPrimary = Color(0xfffcfcff);
@@ -17,7 +17,7 @@ class Constants {
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
     accentColor: lightAccent,
-    cursorColor: lightAccent,
+    cursorColor: darkPrimary,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
@@ -39,21 +39,43 @@ class Constants {
   );
 
   static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    backgroundColor: darkBG,
-    primaryColor: darkPrimary,
-    accentColor: darkAccent,
-    scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
-    indicatorColor: Colors.grey,
+    // brightness: Brightness.dark,
+    // backgroundColor: darkBG,
+    // primaryColor: darkPrimary,
+    // accentColor: darkAccent,
+    // scaffoldBackgroundColor: darkBG,
+    // cursorColor: darkAccent,
+    // indicatorColor: Colors.grey,
+    // appBarTheme: AppBarTheme(
+    //   elevation: 0,
+    //   textTheme: TextTheme(
+    //     headline6: TextStyle(
+    //       color: lightBG,
+    //       fontSize: 18.0,
+    //       fontWeight: FontWeight.w800,
+    //     ),
+    //   ),
+    // ),
+    backgroundColor: lightBG,
+    primaryColor: lightPrimary,
+    accentColor: lightAccent,
+    cursorColor: darkPrimary,
+    scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
       textTheme: TextTheme(
         headline6: TextStyle(
-          color: lightBG,
+          color: darkBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
+      ),
+    ),
+    textTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: darkBG,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w800,
       ),
     ),
   );
