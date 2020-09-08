@@ -5,6 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:froshApp/screens/faq.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
 
@@ -54,7 +56,7 @@ class _TeamPageState extends State<TeamPage> {
               children: <Widget>[
                 Positioned(
                   child: Text(
-                    "Team",
+                    "",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: "CoralPen",
@@ -65,7 +67,7 @@ class _TeamPageState extends State<TeamPage> {
                 ),
                 Positioned(
                   child: Text(
-                    "Our",
+                    "",
                     style: TextStyle(
                       color: Colors.white,
                       fontFamily: "CoralPen",
@@ -74,18 +76,19 @@ class _TeamPageState extends State<TeamPage> {
                   ),
                   top: constraints.maxHeight - 170.0,
                 ),
-                Positioned(
-                  child: Text(
-                    "",
-                    style: TextStyle(
-                      color: Color(0xFF7D9AFF),
-                      fontSize: 14.0,
-                      fontFamily: "Campton_Light",
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  top: constraints.maxHeight - 170.0,
-                ),
+                // Positioned(
+                //   child: Text(
+                //     "Welcome to frosh",
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 14.0,
+                //       fontFamily: "Campton_Light",
+                //       fontWeight: FontWeight.w800,
+                //     ),
+                //   ),
+                //   top: 290.0,
+                //   right: 20,
+                // ),
               ],
             );
           },
@@ -157,11 +160,14 @@ class _TeamPageState extends State<TeamPage> {
         ),
         child: FloatingActionButton(
           child: Icon(
-            Icons.share,
+            LineAwesomeIcons.instagram,
+            size: 35,
             color: Colors.white,
           ),
           backgroundColor: Colors.blueGrey,
-          onPressed: () {},
+          onPressed: () {
+            _launchURL("https://www.instagram.com/froshtiet/");
+          },
         ),
       ),
     );
@@ -177,7 +183,7 @@ class _TeamPageState extends State<TeamPage> {
           bottomLeft: Radius.circular(48.0),
         ),
         image: DecorationImage(
-          image: AssetImage("assets/images/1616109.jpg"),
+          image: AssetImage("assets/plane-01.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -202,4 +208,12 @@ class TeamCard {
   Widget page;
 
   TeamCard(this.image, this.page);
+}
+
+_launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
 }

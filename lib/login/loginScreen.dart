@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'FROSH 2K20',
+      title: 'FROSH 2020',
       emailValidator: emailValidator,
       passwordValidator: passwordValidator,
       onLogin: (_data) => getAuthToken(_data),

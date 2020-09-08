@@ -164,8 +164,11 @@ class _HomeState extends State<Home> {
                           opacity: top <= 100 ? 1.0 : 0.0,
                           duration: Duration(milliseconds: 200),
                           child: Text(
-                            "FROSH 2020",
-                            style: GoogleFonts.openSans(letterSpacing: 3),
+                            "FROSH  2020",
+                            style: GoogleFonts.openSans(
+                              letterSpacing: 5,
+                              color: Colors.black.withAlpha(180),
+                            ),
                           )),
                       centerTitle: true,
                       background: ClipRRect(

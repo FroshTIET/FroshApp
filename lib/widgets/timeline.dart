@@ -56,38 +56,45 @@ class _FroshTimelineState extends State<_FroshTimeline> {
                   accentColor: Colors.white.withOpacity(0.2),
                 ),
                 child: SafeArea(
-                  child: Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: Column(
-                      children: [
-                        _Header(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Expanded(
-                          child: Center(
-                              child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Could not load the timeline. Please check your internet connection.",
-                                  style: TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
-                            ),
-                          )),
-                        ),
-                      ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/map.jpg'),
+                          fit: BoxFit.cover),
+                    ),
+                    child: Scaffold(
+                      backgroundColor: Colors.transparent,
+                      body: Column(
+                        children: [
+                          _Header(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: Center(
+                                child: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error,
+                                    color: Colors.black,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Could not load the timeline. Please check your internet connection.",
+                                    style: TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
+                              ),
+                            )),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

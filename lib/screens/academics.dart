@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:froshApp/apiHelpers/helperFunctions.dart';
 import 'package:froshApp/models/constants.dart';
 import 'package:froshApp/models/student.dart';
 import 'package:froshApp/util/getProfileInfo.dart';
@@ -40,7 +39,7 @@ class DashboardTwoPage extends StatelessWidget {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () async {
-                        _launchURL("https://youtu.be/6X8L-G7GyGU");
+                        _launchURL("https://ln-k.cf/timetable");
                       },
                       child: Container(
                         height: 190,
@@ -119,7 +118,7 @@ class DashboardTwoPage extends StatelessWidget {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        _launchURL("https://murphy-lms.thapar.edu/moodle/");
+                        _launchURL("https://ln-k.cf/lmsupdate");
                       },
                       child: Container(
                         height: 120,
