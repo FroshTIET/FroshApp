@@ -22,7 +22,10 @@ class LoginScreen extends StatelessWidget {
       passwordValidator: passwordValidator,
       onLogin: (_data) => getAuthToken(_data),
       onSignup: (_data) => registerUser(_data),
-      onSubmitAnimationCompleted: () {
+      onSubmitAnimationCompleted: () async {
+        await prefs.setString("userToken", userToken);
+        await prefs.setBool("firstVisit", false);
+        firstVisit = false;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => HomeWrapper(),
         ));

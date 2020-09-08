@@ -8,6 +8,7 @@ import 'package:froshApp/screens/faq.dart';
 import 'package:froshApp/screens/teampage.dart';
 import 'package:froshApp/state/themeNotifier.dart';
 import 'package:froshApp/util/places.dart';
+import 'package:froshApp/util/sendFirebaseToken.dart';
 import 'package:froshApp/util/snackbar_helper.dart';
 import 'package:froshApp/virtualTour/virtualTour.dart';
 import 'package:froshApp/widgets/colorLoader.dart';
@@ -42,7 +43,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
     } catch (e) {}
   }
 
-  void setUpMessaging() {
+  void setUpMessaging() async {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
       print('on message $message');
@@ -57,7 +58,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
     });
 
     FlutterError.onError = null;
-    _firebaseMessaging.getToken().then((token) => print("tokenkey: " + token));
+    _firebaseMessaging.getToken().then((token) async {
+      await sendFirebaseToken(userToken, token);
+    });
     _firebaseMessaging.subscribeToTopic("allusers");
   }
 
@@ -101,6 +104,21 @@ class _HomeState extends State<Home> {
     return _list;
   }
 
+  Future<List<String>> getVirtTourImages() async {
+    try {
+      Dio dio = new Dio();
+      Response _response = await dio.get("$apiUrl/app/virtualtour");
+      return await (_response.data
+          .map((x) => x['image_link'])
+          .toList()
+          .cast<String>());
+    } catch (e) {
+      showErrorToast(context,
+          "Failed to fetch virtual tour images. Please check your internet connection.");
+      return null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -117,9 +135,15 @@ class _HomeState extends State<Home> {
           LineAwesomeIcons.codepen,
           size: 30,
         ),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => VirtualTour()));
+        onPressed: () async {
+          List<String> _imageLists = await getVirtTourImages();
+
+          _imageLists == null
+              ? null
+              : Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VirtualTour(_imageLists)));
         },
       ),
       body: NestedScrollView(

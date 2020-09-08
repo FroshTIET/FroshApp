@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:froshApp/virtualTour/sphere3d.dart';
 
 class VirtualTour extends StatefulWidget {
+  final List<String> photoList;
+
+  VirtualTour(List<String> this.photoList);
   @override
   _VirtualTourState createState() => _VirtualTourState();
 }
@@ -9,10 +12,7 @@ class VirtualTour extends StatefulWidget {
 class _VirtualTourState extends State<VirtualTour> {
   int currentPhoto = 0;
   bool interactive = false;
-  List<String> _photos = [
-    "https://i.imgur.com/4uTX1Jp.jpg",
-    "https://i.imgur.com/KCsTLpt.jpg",
-  ];
+  List<String> _photos;
 
   int getNextIndex() {
     return currentPhoto + 1 > _photos.length - 1 ? 0 : currentPhoto + 1;
@@ -23,27 +23,35 @@ class _VirtualTourState extends State<VirtualTour> {
   }
 
   @override
+  void initState() {
+    _photos = widget.photoList;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget _bottomBarItem(IconData icon, int index) {
       return GestureDetector(
         onTap: () {
-          switch (index) {
-            case 0:
-              setState(() {
-                this.currentPhoto = this.getPreviousIndex();
-              });
-              break;
-            case 1:
-              setState(() {
-                interactive = !interactive;
-              });
-              break;
-            case 2:
-              setState(() {
-                this.currentPhoto = this.getNextIndex();
-              });
-              break;
-            default:
+          if (this.mounted) {
+            switch (index) {
+              case 0:
+                setState(() {
+                  this.currentPhoto = this.getPreviousIndex();
+                });
+                break;
+              case 1:
+                setState(() {
+                  interactive = !interactive;
+                });
+                break;
+              case 2:
+                setState(() {
+                  this.currentPhoto = this.getNextIndex();
+                });
+                break;
+              default:
+            }
           }
         },
         child: CircleAvatar(
@@ -140,7 +148,7 @@ class _VirtualTourState extends State<VirtualTour> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thapar Virtual Tour !"),
+        title: Text("Thapar Virtual Tour"),
       ),
       body: Stack(
         children: [

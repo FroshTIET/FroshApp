@@ -193,14 +193,17 @@ class _HomeDrawerState extends State<HomeDrawer>
       child: InkWell(
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
-        onTap: () {
-          listData.redirectPage != null
-              ? Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => listData.redirectPage),
-                  (Route<dynamic> route) => false)
-              : null;
+        onTap: () async {
+          if (listData.redirectPage != null) {
+            userToken = "";
+            firebaseToken = "";
+            await prefs.setString("userToken", "");
+
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => listData.redirectPage),
+                (Route<dynamic> route) => false);
+          }
         },
         child: Column(
           children: <Widget>[

@@ -231,6 +231,7 @@ class _CameraClassState extends State<CameraClass>
   @override
   void dispose() {
     _controller.dispose();
+
     super.dispose();
   }
 

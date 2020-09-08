@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:froshApp/models/constants.dart';
 import 'package:froshApp/screens/faq.dart';
+import 'package:froshApp/screens/notificationPage.dart';
 import 'package:froshApp/util/getProfileInfo.dart';
 import 'package:froshApp/util/snackbar_helper.dart';
 import 'package:froshApp/widgets/colorLoader.dart';
@@ -197,14 +198,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MentorPage()));
+                                      builder: (context) =>
+                                          NotificationPage()));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                "Refresh Info",
+                                "Notifications",
                                 style: TextStyle(
-                                    color: Colors.white60,
+                                    color: Colors.white70,
                                     fontSize: 3 *
                                         MediaQuery.of(context).size.width /
                                         100),
