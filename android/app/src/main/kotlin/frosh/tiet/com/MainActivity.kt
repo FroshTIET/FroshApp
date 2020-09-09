@@ -1,4 +1,4 @@
-package com.example.froshApp
+package frosh.tiet.com
 
 import io.flutter.embedding.android.FlutterActivity
 
